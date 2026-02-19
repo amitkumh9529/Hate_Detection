@@ -205,3 +205,33 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# =========================
+# ML / Data Science Specific
+# =========================
+
+# Data
+data/
+datasets/
+*.csv
+*.tsv
+*.parquet
+*.jsonl
+
+# Models
+models/
+checkpoints/
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.bin
+
+# Experiment tracking
+mlruns/
+wandb/
+lightning_logs/
+
+# Large artifacts
+artifacts/
+outputs/
