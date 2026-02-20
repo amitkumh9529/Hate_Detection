@@ -9,12 +9,12 @@ import os
 
 @dataclass
 class DataIngestionConfig:
-    data_dir: str = os.path.join(os.getcwd(), DATA_DIR)
-    ingestion_dir: str = os.path.join(os.getcwd(), DATA_INGESTION_DIR)
-    raw_data_path: str = os.path.join(os.getcwd(), DATA_DIR, RAW_DATA_FILE)
-    imbalance_data_path: str = os.path.join(os.getcwd(), DATA_DIR, IMBALANCED_DATA_FILE)
-    ingested_raw_path: str = INGESTED_RAW_DATA_PATH
-    ingested_imbalance_path: str = INGESTED_IMBALANCED_DATA_PATH
+    data_dir: str = DATA_DIR
+    raw_data_file: str = RAW_DATA_FILE
+    imbalance_data_file: str = IMBALANCED_DATA_FILE
+    data_ingestion_dir: str = DATA_INGESTION_DIR
+    ingested_raw_data_path: str = INGESTED_RAW_DATA_PATH
+    ingested_imbalance_data_path: str = INGESTED_IMBALANCED_DATA_PATH
 
 
 # =====================================================

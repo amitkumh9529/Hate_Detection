@@ -10,7 +10,7 @@ ARTIFACTS_DIR = os.path.join("artifacts", TIMESTAMP)
 
 DATA_DIR = "data"   # Your actual folder (case-sensitive)
 RAW_DATA_FILE = "raw_data.csv"
-IMBALANCED_DATA_FILE = "imbalance_data.csv"
+IMBALANCED_DATA_FILE = "imbalanced_data.csv"
 
 LABEL = "label"
 TWEET = "tweet"
