@@ -16,8 +16,8 @@ class ModelPusher:
         logging.info("Entered initiate_model_pusher method")
 
         try:
-            source_model_path = self.model_pusher_config.BEST_MODEL_PATH
-            production_model_path = self.model_pusher_config.PRODUCTION_MODEL_PATH
+            source_model_path = self.model_pusher_config.best_model_path
+            production_model_path = self.model_pusher_config.production_model_path
 
             if not os.path.exists(source_model_path):
                 raise Exception("Best model not found. Cannot push to production.")

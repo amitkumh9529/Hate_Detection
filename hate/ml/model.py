@@ -14,11 +14,13 @@ class ModelArchitecture:
     
     def get_model(self):
         model = Sequential()
-        model.add(Embedding(MAX_WORDS, 100,input_length=MAX_LEN))
+        model.add(Embedding(MAX_WORDS, 100))
         model.add(SpatialDropout1D(0.2))
-        model.add(LSTM(100,dropout=0.2,recurrent_dropout=0.2))
-        model.add(Dense(1,activation=ACTIVATION))
+        model.add(LSTM(100, dropout=0.2, recurrent_dropout=0.2))
+        model.add(Dense(1, activation=ACTIVATION))
+        # Build with input shape so summary() shows concrete shapes and param counts (not "?")
+        model.build(input_shape=(None, MAX_LEN))
         model.summary()
-        model.compile(loss=LOSS,optimizer=RMSprop(),metrics=METRICS)
+        model.compile(loss=LOSS, optimizer=RMSprop(), metrics=METRICS)
 
         return model

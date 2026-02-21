@@ -33,7 +33,7 @@ TRANSFORMED_FILE_PATH = os.path.join(DATA_TRANSFORMATION_DIR, TRANSFORMED_FILE_N
 TOKENIZER_FILE_NAME = "tokenizer.pickle"
 TOKENIZER_FILE_PATH = os.path.join(DATA_TRANSFORMATION_DIR, TOKENIZER_FILE_NAME)
 
-DROP_COLUMNS = ['Unnamed: 0','count','hate_speech','offensive_language','neither']
+DROP_COLUMNS = ['Unnamed: 0', 'id', 'count', 'hate_speech', 'offensive_language', 'neither']
 CLASS = "class"
 
 # =====================================================

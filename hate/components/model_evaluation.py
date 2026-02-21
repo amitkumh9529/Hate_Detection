@@ -37,8 +37,15 @@ class ModelEvaluation:
 
             model = keras.models.load_model(model_path)
 
-            x_test = x_test["tweet"].astype(str).squeeze()
+            # Get tweet column (name may be "tweet" or column 0 when Series was saved)
+            tweet_col = x_test["tweet"] if "tweet" in x_test.columns else x_test.iloc[:, 0]
+            x_test = tweet_col.fillna("").astype(str).replace("nan", "").squeeze()
             y_test = y_test.squeeze()
+
+            # Drop rows where tweet is empty/NaN so tokenizer never sees floats or invalid data
+            valid = x_test.str.len() > 0
+            x_test = x_test[valid].reset_index(drop=True)
+            y_test = y_test.loc[valid].reset_index(drop=True)
 
             sequences = tokenizer.texts_to_sequences(x_test)
             padded = pad_sequences(sequences, maxlen=MAX_LEN)
@@ -63,7 +70,7 @@ class ModelEvaluation:
             logging.info("Starting model evaluation")
 
             trained_model_path = self.model_trainer_artifacts.trained_model_path
-            best_model_path = self.model_evaluation_config.BEST_MODEL_PATH
+            best_model_path = self.model_evaluation_config.best_model_path
 
             trained_accuracy = self.evaluate_model(trained_model_path)
 
@@ -73,7 +80,11 @@ class ModelEvaluation:
                 shutil.copy(trained_model_path, best_model_path)
 
                 logging.info("No existing best model. Current model accepted.")
-                return ModelEvaluationArtifacts(is_model_accepted=True)
+                return ModelEvaluationArtifacts(
+                    is_model_accepted=True,
+                    trained_model_accuracy=trained_accuracy,
+                    best_model_accuracy=trained_accuracy,
+                )
 
             # Compare with existing best model
             best_accuracy = self.evaluate_model(best_model_path)
@@ -82,11 +93,17 @@ class ModelEvaluation:
                 shutil.copy(trained_model_path, best_model_path)
                 logging.info("New model is better. Replaced best model.")
                 is_model_accepted = True
+                new_best_accuracy = trained_accuracy
             else:
                 logging.info("Existing best model is better.")
                 is_model_accepted = False
+                new_best_accuracy = best_accuracy
 
-            return ModelEvaluationArtifacts(is_model_accepted=is_model_accepted)
+            return ModelEvaluationArtifacts(
+                is_model_accepted=is_model_accepted,
+                trained_model_accuracy=trained_accuracy,
+                best_model_accuracy=new_best_accuracy,
+            )
 
         except Exception as e:
             raise CustomException(e, sys) from e

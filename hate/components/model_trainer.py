@@ -47,11 +47,11 @@ class ModelTrainer:
     def tokenizing(self,x_train):
         try:
             logging.info("Applying tokenization on the data")
-            tokenizer = Tokenizer(num_words=self.model_trainer_config.MAX_WORDS)
+            tokenizer = Tokenizer(num_words=self.model_trainer_config.max_words)
             tokenizer.fit_on_texts(x_train)
             sequences = tokenizer.texts_to_sequences(x_train)
             logging.info(f"converting text to sequences: {sequences}")
-            sequences_matrix = pad_sequences(sequences,maxlen=self.model_trainer_config.MAX_LEN)
+            sequences_matrix = pad_sequences(sequences, maxlen=self.model_trainer_config.max_len)
             logging.info(f" The sequence matrix is: {sequences_matrix}")
             return sequences_matrix,tokenizer
         except Exception as e:
@@ -88,31 +88,32 @@ class ModelTrainer:
 
 
             logging.info("Entered into model training")
-            model.fit(sequences_matrix, y_train, 
-                        batch_size=self.model_trainer_config.BATCH_SIZE, 
-                        epochs = self.model_trainer_config.EPOCH, 
-                        validation_split=self.model_trainer_config.VALIDATION_SPLIT, 
+            model.fit(sequences_matrix, y_train,
+                        batch_size=self.model_trainer_config.batch_size,
+                        epochs=self.model_trainer_config.epoch,
+                        validation_split=self.model_trainer_config.validation_split,
                         )
             logging.info("Model training finished")
 
             
-            with open('tokenizer.pickle', 'wb') as handle:
+            tokenizer_path = self.data_transformation_artifacts.tokenizer_path
+            os.makedirs(os.path.dirname(tokenizer_path), exist_ok=True)
+            with open(tokenizer_path, 'wb') as handle:
                 pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
-            os.makedirs(self.model_trainer_config.TRAINED_MODEL_DIR,exist_ok=True)
-
-
+            os.makedirs(os.path.dirname(self.model_trainer_config.trained_model_path), exist_ok=True)
 
             logging.info("saving the model")
-            model.save(self.model_trainer_config.TRAINED_MODEL_PATH)
-            x_test.to_csv(self.model_trainer_config.X_TEST_DATA_PATH)
-            y_test.to_csv(self.model_trainer_config.Y_TEST_DATA_PATH)
-
-            x_train.to_csv(self.model_trainer_config.X_TRAIN_DATA_PATH)
+            model.save(self.model_trainer_config.trained_model_path)
+            x_test.to_csv(self.model_trainer_config.x_test_path)
+            y_test.to_csv(self.model_trainer_config.y_test_path)
+            x_train.to_csv(self.model_trainer_config.x_train_path)
 
             model_trainer_artifacts = ModelTrainerArtifacts(
-                trained_model_path = self.model_trainer_config.TRAINED_MODEL_PATH,
-                x_test_path = self.model_trainer_config.X_TEST_DATA_PATH,
-                y_test_path = self.model_trainer_config.Y_TEST_DATA_PATH)
+                trained_model_path=self.model_trainer_config.trained_model_path,
+                x_test_path=self.model_trainer_config.x_test_path,
+                y_test_path=self.model_trainer_config.y_test_path,
+                x_train_path=self.model_trainer_config.x_train_path,
+            )
             logging.info("Returning the ModelTrainerArtifacts")
             return model_trainer_artifacts
 
