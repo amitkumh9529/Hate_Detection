@@ -23,15 +23,15 @@ class DataIngestion:
 
             imbalance_source = os.path.join(
                 self.data_ingestion_config.data_dir,
-                self.data_ingestion_config.imbalance_data_file
+                self.data_ingestion_config.imbalanced_data_file
             )
 
             shutil.copy(raw_source, self.data_ingestion_config.ingested_raw_data_path)
-            shutil.copy(imbalance_source, self.data_ingestion_config.ingested_imbalance_data_path)
+            shutil.copy(imbalance_source, self.data_ingestion_config.ingested_imbalanced_data_path)
 
             return DataIngestionArtifacts(
                 raw_data_file_path=self.data_ingestion_config.ingested_raw_data_path,
-                imbalance_data_file_path=self.data_ingestion_config.ingested_imbalance_data_path
+                imbalance_data_file_path=self.data_ingestion_config.ingested_imbalanced_data_path
             )
 
         except Exception as e:

@@ -11,10 +11,10 @@ import os
 class DataIngestionConfig:
     data_dir: str = DATA_DIR
     raw_data_file: str = RAW_DATA_FILE
-    imbalance_data_file: str = IMBALANCED_DATA_FILE
+    imbalanced_data_file: str = IMBALANCED_DATA_FILE
     data_ingestion_dir: str = DATA_INGESTION_DIR
     ingested_raw_data_path: str = INGESTED_RAW_DATA_PATH
-    ingested_imbalance_data_path: str = INGESTED_IMBALANCED_DATA_PATH
+    ingested_imbalanced_data_path: str = INGESTED_IMBALANCED_DATA_PATH
 
 
 # =====================================================
